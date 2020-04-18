@@ -1,11 +1,35 @@
 <?php
 
-namespace Kematjaya\Currency;
+namespace Kematjaya\Currency\Lib;
 
 /**
  * @author Nur Hidayatullah <kematjaya0@gmail.com>
  */
-class CurrencyFormat {
+class Terbilang 
+{
+    
+    public function convertToString($number, $curency = null) 
+    {
+        $hasil = '';
+        if($number < 0) {
+            $hasil = "minus ". trim($this->convert($number));
+        } else {
+            $hasil = trim($this->convert($number));
+        }
+                
+        $mataUang = "";
+        switch($curency) {
+            case "IDR":
+                $mataUang = "Rupiah";
+                break;
+            case "USD":
+                $mataUang = "Dollar";
+                break;
+            default:
+                break;
+        }
+        return trim(ucwords(strtolower($hasil)). " " . $mataUang);
+    }
     
     public function convert($nilai)
     {
@@ -36,4 +60,5 @@ class CurrencyFormat {
         }     
         return $temp;
     }
+    
 }
