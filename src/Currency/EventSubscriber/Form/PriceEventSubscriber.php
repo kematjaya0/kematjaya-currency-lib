@@ -6,6 +6,7 @@ use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Kematjaya\Currency\Lib\CurrencyFormat;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+
 /**
  * @author Nur Hidayatullah <kematjaya0@gmail.com>
  */
@@ -38,7 +39,7 @@ class PriceEventSubscriber implements EventSubscriberInterface
         $data = $event->getData();
         if($this->name and isset($data[$this->name]))
         {
-            $data[$this->name] = $data[$this->name] ? (float) $this->currencyFormat->PriceToFloat($data[$this->name]):0;
+            $data[$this->name] = $data[$this->name] ? (float) $this->currencyFormat->PriceToFloat($data[$this->name]): 0;
             $event->setData($data);
         }   
     }
