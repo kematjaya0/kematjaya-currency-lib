@@ -6,7 +6,7 @@
 use Symfony\Component\DependencyInjection\Dumper\Preloader;
 
 require dirname(__DIR__, 3).'\\vendor/autoload.php';
-require __DIR__.'/ContainerC6VIc0Z/Kematjaya_Tests_Currency_KmjCurrencyTestingKernelTestDebugContainer.php';
+require __DIR__.'/ContainerXCa5hO8/Kematjaya_Tests_Currency_KmjCurrencyTestingKernelTestDebugContainer.php';
 
 $classes = [];
 $classes[] = 'Kematjaya\Currency\KmjCurrencyBundle';
