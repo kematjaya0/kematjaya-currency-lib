@@ -11,6 +11,9 @@
         <service id="Kematjaya\Tests\Currency\CurrencyFormatTest" class="Kematjaya\Tests\Currency\CurrencyFormatTest">
             <argument type="service" id="service_container" />
         </service>
+        <service id="Kematjaya\Currency\EventSubscriber\Form\PriceEventSubscriber" class="Kematjaya\Currency\EventSubscriber\Form\PriceEventSubscriber">
+            <argument type="service" id="Kematjaya\Currency\Lib\CurrencyFormat" />
+        </service>
         <service id="Kematjaya\Currency\DataTransformer\PriceDataTransformer" class="Kematjaya\Currency\DataTransformer\PriceDataTransformer">
             <argument type="service" id="Kematjaya\Currency\Lib\CurrencyFormat" />
         </service>
