@@ -4,7 +4,6 @@ namespace Kematjaya\Currency\Twig;
 
 use Kematjaya\Currency\Lib\CurrencyFormat;
 use Twig\TwigFunction;
-use Twig\TwigFilter;
 use Twig\Extension\AbstractExtension;
 /**
  * @author Nur Hidayatullah <kematjaya0@gmail.com>
