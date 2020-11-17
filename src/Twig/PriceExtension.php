@@ -18,22 +18,11 @@ class PriceExtension extends AbstractExtension
         $this->currencyFormat = $currencyFormat;
     }
     
-    public function getFilters()
-    {
-        return [
-            new TwigFilter('terbilang', [$this, 'getTerbilang']),
-        ];
-    }
-    
     public function getFunctions()
     {
         return array(
             new TwigFunction('price', array($this, 'price'), array('is_safe' => array('html')))
         );
-    }
-    
-    public function getTerbilang($number, $curency = null) {
-        return $this->currencyFormat->terbilang($number, $curency);
     }
     
     public function price($number)

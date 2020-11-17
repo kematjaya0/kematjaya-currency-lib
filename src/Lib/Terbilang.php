@@ -2,11 +2,19 @@
 
 namespace Kematjaya\Currency\Lib;
 
+use Kematjaya\Currency\Contract\Messages;
 /**
  * @author Nur Hidayatullah <kematjaya0@gmail.com>
  */
 class Terbilang 
 {
+    public function __construct() 
+    {
+        $package = self::class;
+        $version = "2.0";
+        $message = "use Kematjaya\Currency\ConverterInterface instead";
+        Messages::triggerDeprecation(self::class, "2.0", "use Kematjaya\Currency\ConverterInterface instead");
+    }
     
     public function convertToString($number, $curency = null) 
     {

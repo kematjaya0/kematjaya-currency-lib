@@ -5,11 +5,17 @@
 
 use Symfony\Component\DependencyInjection\Dumper\Preloader;
 
-require dirname(__DIR__, 3).'\\vendor/autoload.php';
-require __DIR__.'/ContainerXCa5hO8/Kematjaya_Tests_Currency_KmjCurrencyTestingKernelTestDebugContainer.php';
+if (in_array(PHP_SAPI, ['cli', 'phpdbg'], true)) {
+    return;
+}
+
+require dirname(__DIR__, 3).'/vendor/autoload.php';
+require __DIR__.'/ContainerVIgBZax/Kematjaya_Tests_Currency_KmjCurrencyTestingKernelTestDebugContainer.php';
+require __DIR__.'/ContainerVIgBZax/getKematjaya_CurrencyFormatService.php';
 
 $classes = [];
 $classes[] = 'Kematjaya\Currency\KmjCurrencyBundle';
+$classes[] = 'Kematjaya\Currency\Lib\CurrencyFormat';
 $classes[] = 'Symfony\Component\DependencyInjection\ContainerInterface';
 
 Preloader::preload($classes);

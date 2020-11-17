@@ -9,6 +9,7 @@
         </service>
         <service id="kematjaya.currency_format" alias="Kematjaya\Currency\Lib\CurrencyFormat" public="true"></service>
         <service id="Kematjaya\Currency\Lib\Terbilang" class="Kematjaya\Currency\Lib\Terbilang"></service>
+        <service id="Kematjaya\Currency\Converter\ConverterInterface" class="Kematjaya\Currency\Converter\IndonesianConverter"></service>
         <service id="Kematjaya\Tests\Currency\CurrencyFormatTest" class="Kematjaya\Tests\Currency\CurrencyFormatTest">
             <argument type="service" id="service_container" />
         </service>
@@ -23,7 +24,11 @@
             <tag name="form.type"/>
         </service>
         <service id="Kematjaya\Currency\Twig\PriceExtension" class="Kematjaya\Currency\Twig\PriceExtension">
-            <argument type="service" id="kematjaya.currency_format" />
+            <argument type="service" id="kematjaya.twig.price" />
+            <tag name="twig.extension"/>
+        </service>
+        <service id="Kematjaya\Currency\Twig\ConverterExtension" class="Kematjaya\Currency\Twig\ConverterExtension">
+            <argument type="service" id="kematjaya.twig.converter" />
             <tag name="twig.extension"/>
         </service>
     </services>

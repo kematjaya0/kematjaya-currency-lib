@@ -11,7 +11,8 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 /**
  * @author Nur Hidayatullah <kematjaya0@gmail.com>
  */
-class PriceType extends AbstractType {
+class PriceType extends AbstractType 
+{
     
     private $transformer;
 
