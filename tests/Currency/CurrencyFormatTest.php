@@ -2,21 +2,62 @@
 
 namespace Kematjaya\Currency\Tests\Currency;
 
-use Kematjaya\Currency\Converter\IndonesianConverter;
-use Kematjaya\Currency\Lib\CurrencyFormat;
-use Kematjaya\Currency\Tests\KmjKernelTest;
-use PHPUnit\Framework\TestCase;
+use Kematjaya\Currency\Converter\ConverterInterface;
+use Kematjaya\Currency\Lib\CurrencyFormatInterface;
+use Kematjaya\Currency\Tests\AppKernelTest;
+use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
+
 /**
  * @author Nur Hidayatullah <kematjaya0@gmail.com>
  */
 
-class CurrencyFormatTest extends TestCase 
+class CurrencyFormatTest extends WebTestCase 
 {
-    
-    public function testIndonesianConvert()
+    public static function getKernelClass() 
     {
-        $converter = new IndonesianConverter();
+        return AppKernelTest::class;
+    }
+    
+    public function testContainer(): ContainerInterface
+    {
+        $client = parent::createClient();
+        $container = $client->getContainer();
+        $this->assertInstanceOf(ContainerInterface::class, $container);
         
+        return $container;
+    }
+    
+    /**
+     * @depends testContainer
+     * @param ContainerInterface $container
+     * @return ConverterInterface
+     */
+    public function testInstance(ContainerInterface $container): ConverterInterface
+    {
+        $this->assertTrue($container->has('kmj.converter'));
+        
+        return $container->get('kmj.converter');
+    }
+    
+    /**
+     * @depends testContainer
+     * @param ContainerInterface $container
+     * @return CurrencyFormatInterface
+     */
+    public function testInstanceCurrencyFormat(ContainerInterface $container): CurrencyFormatInterface
+    {
+        $this->assertTrue($container->has('kmj.currency_format'));
+        
+        return $container->get('kmj.currency_format');
+    }
+    
+    /**
+     * @depends testInstance
+     * @param ConverterInterface $converter
+     */
+    public function testIndonesianConvert(ConverterInterface $converter)
+    {
         $this->assertEquals('seratus', trim(strtolower($converter->convert(100))));
         $this->assertEquals('seratus rupiah', trim(strtolower($converter->convert(100, true))));
         
@@ -30,12 +71,12 @@ class CurrencyFormatTest extends TestCase
         $this->assertEquals('satu juta rupiah', trim(strtolower($converter->convert(1000000, true))));
     }
     
-    public function testCurrency()
+    /**
+     * @depends testInstanceCurrencyFormat
+     * @param CurrencyFormatInterface $currencyFormat
+     */
+    public function testCurrency(CurrencyFormatInterface $currencyFormat)
     {
-        $kernel  = new KmjKernelTest('test', true);
-        $kernel->boot();
-        $currencyFormat = new CurrencyFormat($kernel->getContainer());
-        
         $this->assertEquals("IDR", $currencyFormat->getCurrencySymbol());
         
         $currencyFormat->setCurrency("USD");
@@ -45,12 +86,12 @@ class CurrencyFormatTest extends TestCase
         $currencyFormat->setCurrency("IDD");
     }
     
-    public function testParsingCurrency()
+    /**
+     * @depends testInstanceCurrencyFormat
+     * @param CurrencyFormatInterface $currencyFormat
+     */
+    public function testParsingCurrency(CurrencyFormatInterface $currencyFormat)
     {
-        $kernel  = new KmjKernelTest('test', true);
-        $kernel->boot();
-        $currencyFormat = new CurrencyFormat($kernel->getContainer());
-        
         $this->assertEquals(10000, $currencyFormat->priceToFloat($currencyFormat->getCurrencySymbol().'10000'));
         $this->assertEquals($currencyFormat->getCurrencySymbol().' 10,000', $currencyFormat->formatPrice(10000));
     }

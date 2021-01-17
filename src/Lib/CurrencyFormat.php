@@ -2,7 +2,7 @@
 
 namespace Kematjaya\Currency\Lib;
 
-use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\DependencyInjection\ParameterBag\ContainerBagInterface;
 use Symfony\Component\Intl\Currencies;
 use Kematjaya\Currency\Lib\CurrencyFormatInterface;
 
@@ -41,13 +41,13 @@ class CurrencyFormat implements CurrencyFormatInterface
      */
     private $container;
     
-    function __construct(ContainerInterface $container) 
+    function __construct(ContainerBagInterface $container) 
     {
-        $this->container    = $container;
-        $this->currency     = ($container->hasParameter('currency')) ? $container->getParameter('currency') : "IDR";
-        $this->centLimit    = ($container->hasParameter('cent_limit')) ? $container->getParameter('cent_limit') : 0;
-        $this->centPoint    = ($container->hasParameter('cent_point')) ? $container->getParameter('cent_point') : '.';
-        $this->thousandPoint = ($container->hasParameter('thousand_point')) ? $container->getParameter('thousand_point') : ',';
+        $configs            = $container->get('kmj_currency.currency');
+        $this->currency     = $configs['code'];
+        $this->centLimit    = $configs['cent_limit'];
+        $this->centPoint        = $configs['cent_point'];
+        $this->thousandPoint    = $configs['thousand_point'];
         
         $names = Currencies::getNames();
         if (!isset($names[$this->currency])) {

@@ -17,6 +17,11 @@ class KmjCurrencyExtension extends Extension
         $loader = new YamlFileLoader($container,
             new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('services.yaml');
+        
+        $configuration = new Configuration();
+        $config = $this->processConfiguration($configuration, $configs);
+        $container->setParameter($this->getAlias(), $config);
+        $container->setParameter(sprintf('%s.%s', $this->getAlias(), 'currency'), $config['currency']);
     }
 
 }

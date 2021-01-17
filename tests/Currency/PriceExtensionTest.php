@@ -2,32 +2,50 @@
 
 namespace Kematjaya\Currency\Tests\Currency;
 
-use Kematjaya\Currency\Tests\KmjKernelTest;
-use Kematjaya\Currency\Lib\CurrencyFormat;
+use Kematjaya\Currency\Tests\AppKernelTest;
+use Kematjaya\Currency\Lib\CurrencyFormatInterface;
 use Kematjaya\Currency\Twig\PriceExtension;
 use Kematjaya\Currency\Twig\ConverterExtension;
-use PHPUnit\Framework\TestCase;
+use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * @author Nur Hidayatullah <kematjaya0@gmail.com>
  */
-class PriceExtensionTest extends TestCase
+class PriceExtensionTest extends WebTestCase
 {
-    private $kernel;
-    
-    protected function setUp(): void 
+    public static function getKernelClass() 
     {
-        parent::setUp();
-        
-        $kernel  = new KmjKernelTest('test', true);
-        $kernel->boot();
-        
-        $this->kernel = $kernel;
+        return AppKernelTest::class;
     }
     
-    public function testFormatPrice()
+    public function testContainer(): ContainerInterface
     {
-        $currencyFormat = new CurrencyFormat($this->kernel->getContainer());
+        $client = parent::createClient();
+        $container = $client->getContainer();
+        $this->assertInstanceOf(ContainerInterface::class, $container);
+        
+        return $container;
+    }
+    
+    /**
+     * @depends testContainer
+     * @param ContainerInterface $container
+     * @return CurrencyFormatInterface
+     */
+    public function testInstance(ContainerInterface $container): CurrencyFormatInterface
+    {
+        $this->assertTrue($container->has('kmj.currency_format'));
+        
+        return $container->get('kmj.currency_format');
+    }
+    
+    /**
+     * @depends testInstance
+     * @param CurrencyFormatInterface $currencyFormat
+     */
+    public function testFormatPrice(CurrencyFormatInterface $currencyFormat)
+    {
         $ext = new PriceExtension($currencyFormat);
         
         $this->assertEquals($currencyFormat->getCurrencySymbol().' 10,000', $ext->price(10000));
