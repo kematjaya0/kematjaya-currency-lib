@@ -26,4 +26,5 @@ services:
     Kematjaya\Currency\Twig\DateFormatExtension:
         tags: ['twig.extension']
         
-    Kematjaya\Currency\Lib\AbstractDateFormat: ~
+    Kematjaya\Currency\Lib\AbstractDateFormat:
+        class: Kematjaya\Currency\Lib\IndonesianDateFormat
