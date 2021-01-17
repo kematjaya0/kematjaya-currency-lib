@@ -2,7 +2,7 @@
 
 namespace Kematjaya\Currency\Twig;
 
-use Kematjaya\Currency\Lib\CurrencyFormat;
+use Kematjaya\Currency\Lib\CurrencyFormatInterface;
 use Twig\TwigFunction;
 use Twig\Extension\AbstractExtension;
 /**
@@ -10,9 +10,14 @@ use Twig\Extension\AbstractExtension;
  */
 class PriceExtension extends AbstractExtension 
 {
+    
+    /**
+     * 
+     * @var CurrencyFormatInterface
+     */
     private $currencyFormat;
 
-    public function __construct(CurrencyFormat $currencyFormat)
+    public function __construct(CurrencyFormatInterface $currencyFormat)
     {
         $this->currencyFormat = $currencyFormat;
     }

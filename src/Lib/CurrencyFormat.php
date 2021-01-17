@@ -4,10 +4,12 @@ namespace Kematjaya\Currency\Lib;
 
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Intl\Currencies;
+use Kematjaya\Currency\Lib\CurrencyFormatInterface;
+
 /**
  * @author Nur Hidayatullah <kematjaya0@gmail.com>
  */
-class CurrencyFormat 
+class CurrencyFormat implements CurrencyFormatInterface
 {
     /**
      *
@@ -48,8 +50,7 @@ class CurrencyFormat
         $this->thousandPoint = ($container->hasParameter('thousand_point')) ? $container->getParameter('thousand_point') : ',';
         
         $names = Currencies::getNames();
-        if(!isset($names[$this->currency]))
-        {
+        if (!isset($names[$this->currency])) {
             throw new \Exception(sprintf("%s not supported", $this->currency));
         }
         
@@ -80,8 +81,7 @@ class CurrencyFormat
     public function setCurrency(string $currency):self
     {
         $names = Currencies::getNames();
-        if(!isset($names[$currency]))
-        {
+        if (!isset($names[$currency])) {
             throw new \Exception(sprintf("%s not supported", $currency));
         }
         
@@ -90,7 +90,7 @@ class CurrencyFormat
         return $this;
     }
     
-    public function PriceToFloat(string $price):float
+    public function priceToFloat(string $price):float
     {
         $number = (float) str_replace($this->thousandPoint, '', str_replace($this->getCurrencySymbol(), '', $price));
         
@@ -101,6 +101,6 @@ class CurrencyFormat
     {
         $currencyCode = $this->getCurrencySymbol();
         
-        return $currencyCode . " " . number_format($number, $this->centLimit, $this->centPoint, $this->thousandPoint);
+        return sprintf("%s %s", $currencyCode,  number_format($number, $this->centLimit, $this->centPoint, $this->thousandPoint));
     }
 }

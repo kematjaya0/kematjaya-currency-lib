@@ -4,7 +4,7 @@ namespace Kematjaya\Currency\EventSubscriber\Form;
 
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
-use Kematjaya\Currency\Lib\CurrencyFormat;
+use Kematjaya\Currency\Lib\CurrencyFormatInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 /**
@@ -12,10 +12,19 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
  */
 class PriceEventSubscriber implements EventSubscriberInterface
 {
+    /**
+     * 
+     * @var CurrencyFormatInterface
+     */
     private $currencyFormat;
+    
+    /**
+     * 
+     * @var string
+     */
     private $name;
     
-    public function __construct(CurrencyFormat $currencyFormat) 
+    public function __construct(CurrencyFormatInterface $currencyFormat) 
     {
         $this->currencyFormat = $currencyFormat;
     }
@@ -37,9 +46,8 @@ class PriceEventSubscriber implements EventSubscriberInterface
     public function preSubmit(FormEvent $event)
     {
         $data = $event->getData();
-        if($this->name and isset($data[$this->name]))
-        {
-            $data[$this->name] = $data[$this->name] ? (float) $this->currencyFormat->PriceToFloat($data[$this->name]): 0;
+        if ($this->name and isset($data[$this->name])) {
+            $data[$this->name] = $data[$this->name] ? (float) $this->currencyFormat->priceToFloat($data[$this->name]): 0;
             $event->setData($data);
         }   
     }

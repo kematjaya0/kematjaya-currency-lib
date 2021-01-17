@@ -2,7 +2,6 @@
 
 namespace Kematjaya\Currency\Tests\Currency;
 
-use Kematjaya\Currency\Lib\Terbilang;
 use Kematjaya\Currency\Converter\IndonesianConverter;
 use Kematjaya\Currency\Lib\CurrencyFormat;
 use Kematjaya\Currency\Tests\KmjKernelTest;
@@ -13,12 +12,6 @@ use PHPUnit\Framework\TestCase;
 
 class CurrencyFormatTest extends TestCase 
 {
-    
-    public function testConvert()
-    {
-        $this->expectDeprecation();
-        $cr = new Terbilang();
-    }
     
     public function testIndonesianConvert()
     {
@@ -58,7 +51,7 @@ class CurrencyFormatTest extends TestCase
         $kernel->boot();
         $currencyFormat = new CurrencyFormat($kernel->getContainer());
         
-        $this->assertEquals(10000, $currencyFormat->PriceToFloat($currencyFormat->getCurrencySymbol().'10000'));
+        $this->assertEquals(10000, $currencyFormat->priceToFloat($currencyFormat->getCurrencySymbol().'10000'));
         $this->assertEquals($currencyFormat->getCurrencySymbol().' 10,000', $currencyFormat->formatPrice(10000));
     }
     
