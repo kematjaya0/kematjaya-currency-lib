@@ -2,40 +2,34 @@
 
 namespace Kematjaya\Currency\Type;
 
-use Kematjaya\Currency\DataTransformer\PriceDataTransformer;
-use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
-use Symfony\Component\Form\FormBuilderInterface;
+use Kematjaya\Currency\Lib\CurrencyFormatInterface;
+use Symfony\Component\Form\Extension\Core\Type\MoneyType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 /**
  * @author Nur Hidayatullah <kematjaya0@gmail.com>
  */
-class PriceType extends AbstractType 
-{
-    
-    private $transformer;
+class PriceType extends MoneyType 
+{   
+    /**
+     * 
+     * @var CurrencyFormatInterface
+     */
+    private $currencyFormat;
 
-    public function __construct(PriceDataTransformer $transformer)
+    public function __construct(CurrencyFormatInterface $currencyFormat)
     {
-        $this->transformer = $transformer;
-    }
-    
-    public function buildForm(FormBuilderInterface $builder, array $options)
-    {
-        $builder->addModelTransformer($this->transformer);
+        $this->currencyFormat = $currencyFormat;
     }
 
     public function configureOptions(OptionsResolver $resolver)
     {
+        parent::configureOptions($resolver);
+        
         $resolver->setDefaults([
             'invalid_message' => 'The selected issue does not exist',
+            'currency' => $this->currencyFormat->getCurrencySymbol()
         ]);
-    }
-
-    public function getParent()
-    {
-        return TextType::class;
     }
     
 }
