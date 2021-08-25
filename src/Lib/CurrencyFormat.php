@@ -35,12 +35,6 @@ class CurrencyFormat implements CurrencyFormatInterface
      */
     private $currency;
     
-    /**
-     *
-     * @var ContainerInterface
-     */
-    private $container;
-    
     function __construct(ContainerBagInterface $container) 
     {
         $configs            = $container->get('kmj_currency.currency');
