@@ -29,7 +29,7 @@ class PriceExtension extends AbstractExtension
         );
     }
     
-    public function price($number)
+    public function price(float $number = 0)
     {
         return $this->currencyFormat->formatPrice($number);
     }

@@ -49,11 +49,7 @@ class CurrencyFormat implements CurrencyFormatInterface
         $this->centPoint        = $configs['cent_point'];
         $this->thousandPoint    = $configs['thousand_point'];
         
-        $names = Currencies::getNames();
-        if (!isset($names[$this->currency])) {
-            throw new \Exception(sprintf("%s not supported", $this->currency));
-        }
-        
+        $this->isValid($this->currency);
     }
     
     /**
@@ -80,27 +76,34 @@ class CurrencyFormat implements CurrencyFormatInterface
     
     public function setCurrency(string $currency):self
     {
-        $names = Currencies::getNames();
-        if (!isset($names[$currency])) {
-            throw new \Exception(sprintf("%s not supported", $currency));
-        }
+        $this->isValid($currency);
         
         $this->currency = $currency;
         
         return $this;
     }
     
-    public function priceToFloat(string $price):float
+    public function priceToFloat(string $price = ''):float
     {
         $number = (float) str_replace($this->thousandPoint, '', str_replace($this->getCurrencySymbol(), '', $price));
         
         return $number;
     }
     
-    public function formatPrice(float $number):string
+    public function formatPrice(float $number = 0):string
     {
         $currencyCode = $this->getCurrencySymbol();
         
         return sprintf("%s %s", $currencyCode,  number_format($number, $this->centLimit, $this->centPoint, $this->thousandPoint));
+    }
+    
+    protected function isValid(string $currency):bool
+    {
+        $names = Currencies::getNames();
+        if (!isset($names[$currency])) {
+            throw new \Exception(sprintf("%s not supported", $currency));
+        }
+        
+        return true;
     }
 }
