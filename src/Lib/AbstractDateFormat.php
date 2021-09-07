@@ -32,6 +32,8 @@ abstract class AbstractDateFormat implements DateFormatInterface
     
     abstract public function getMonthName(string $month):string;
     
+    abstract public function reverse(string $date, string $splitTime = ','):?\DateTimeInterface;
+    
     public function format(DateTimeInterface $date, $format = 'd M Y')
     {
         $prefix = $this->getPrefix($format);
