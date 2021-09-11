@@ -1,0 +1,32 @@
+{% use "bootstrap_4_layout.html.twig" %}
+
+{% block money_widget -%}
+    
+    {{- parent() -}}
+
+    <script type="text/javascript" src="{{ asset('bundles/kmjcurrency/js/jquery.priceFormat.min.js') }}"></script>
+    <script>
+    
+    (function() {
+        priceFormat{{ name|capitalize }}();
+    })();
+
+    function priceFormat{{ name|capitalize }}() 
+    {
+        if (!window.jQuery) {  
+            alert("JQuery required");
+            return;
+        }
+        
+        $('#{{ id }}').addClass('priceformat');
+        
+        $('#{{ id }}').priceFormat({    
+            prefix: '',
+            suffix: '',
+            centsSeparator: '.',
+            centsLimit: parseInt('0') 
+        });
+    }
+        
+    </script>
+{%- endblock money_widget %}
