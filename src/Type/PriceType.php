@@ -32,7 +32,10 @@ class PriceType extends MoneyType
         
         $resolver->setDefaults([
             'invalid_message' => 'The selected issue does not exist',
-            'currency' => $this->currencyFormat->getCurrencySymbol()
+            'currency' => $this->currencyFormat->getCurrencySymbol(),
+            'prefix' => '',
+            'suffix' => '',
+            'cents-separator' => '.'
         ]);
     }
     
@@ -62,5 +65,10 @@ class PriceType extends MoneyType
         if (false === strpos($view->vars['money_pattern'], $this->currencyFormat->getCurrencySymbol())) {
             $view->vars['money_pattern'] = sprintf("%s %s", $this->currencyFormat->getCurrencySymbol(), $view->vars['money_pattern']);
         }
+        
+        $view->vars['prefix'] = $options['prefix'];
+        $view->vars['suffix'] = $options['suffix'];
+        $view->vars['cents_separator'] = $options['cents-separator'];
+        $view->vars['scale'] = isset($options['scale']) ? $options['scale'] : 0;
     }
 }

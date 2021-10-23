@@ -19,12 +19,16 @@
         }
         
         $('#{{ id }}').addClass('priceformat');
+        $('#{{ id }}').attr('price-prefix', '{{ prefix }}');
+        $('#{{ id }}').attr('price-suffix', '{{ suffix }}');
+        $('#{{ id }}').attr('price-cents-separator', '{{ cents_separator }}');
+        $('#{{ id }}').attr('price-cents-limit', {{ scale }});
         
         $('#{{ id }}').priceFormat({    
-            prefix: '',
-            suffix: '',
-            centsSeparator: '.',
-            centsLimit: parseInt('0') 
+            prefix: $('#{{ id }}').attr('price-prefix'),
+            suffix: $('#{{ id }}').attr('price-suffix'),
+            centsSeparator: $('#{{ id }}').attr('price-cents-separator'),
+            centsLimit: parseInt('' + $('#{{ id }}').attr('price-cents-limit'))
         });
     }
         
