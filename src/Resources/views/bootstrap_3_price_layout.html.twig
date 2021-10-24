@@ -1,9 +1,26 @@
-{% use "bootstrap_3_layout.html.twig" %}
-
 {% block money_widget -%}
     
-    {{- parent() -}}
+    {% set prepend = not (money_pattern starts with '{{') %}
+    {% set append = not (money_pattern ends with '}}') %}
+    {% if prepend or append %}
+        <div class="input-group">
+            {% if prepend %}
+                <span class="input-group-addon">{{ money_pattern|form_encode_currency }}</span>
+            {% endif %}
+            {{- block('form_widget_simple') -}}
+            {% if append %}
+                <span class="input-group-addon">{{ money_pattern|form_encode_currency }}</span>
+            {% endif %}
+        </div>
+    {% else %}
+        {{- block('form_widget_simple') -}}
+    {% endif %}
 
+    {{- block('price_javascript') -}}
+    
+{%- endblock money_widget %}
+
+{% block price_javascript %}
     <script type="text/javascript" src="{{ asset('bundles/kmjcurrency/js/jquery.priceFormat.min.js') }}"></script>
     <script>
     
@@ -33,4 +50,4 @@
     }
         
     </script>
-{%- endblock money_widget %}
+{% endblock %}
