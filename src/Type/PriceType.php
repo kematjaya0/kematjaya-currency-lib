@@ -35,7 +35,8 @@ class PriceType extends MoneyType
             'currency' => $this->currencyFormat->getCurrencySymbol(),
             'prefix' => '',
             'suffix' => '',
-            'cents-separator' => '.'
+            'cents-separator' => '.',
+            'scale' => 0
         ]);
     }
     
@@ -43,16 +44,28 @@ class PriceType extends MoneyType
     {
         $builder->addModelTransformer(
             new CallbackTransformer(
-                function ($value) {
+                function ($value) use ($options) {
+                
+                    if (0 == $options['scale']) {
+                        
+                        return $value;
+                    }
                     
-                    return $value;
-                }, function (?string $value) {
+                    $values = explode(".", $value);
+                    $values[0] = 0 !== strlen($values[0]) ? $values[0]: 0;
+                    $values[1] = isset($values[1]) ? $values[1]: 0;
+                    for ($i = strlen($values[1]); $i < $options['scale']; $i++) {
+                        $values[1] .= '0';
+                    }
+                    
+                    return implode(".", $values);
+                }, function (?string $value) use ($options) {
                     if (null === $value) {
                         
                         return 0;
                     }
                     
-                    return $this->currencyFormat->priceToFloat($value);
+                    return $this->currencyFormat->priceToFloat($value, $options['scale']);
                 }
             )
         );

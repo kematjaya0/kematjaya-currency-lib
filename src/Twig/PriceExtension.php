@@ -29,8 +29,8 @@ class PriceExtension extends AbstractExtension
         );
     }
     
-    public function price(float $number = 0)
+    public function price(float $number = 0, int $centLimit = null, string $centPoint = null, string $thousandPoint = null)
     {
-        return $this->currencyFormat->formatPrice($number);
+        return $this->currencyFormat->formatPrice($number, $centLimit, $centPoint, $thousandPoint);
     }
 }
